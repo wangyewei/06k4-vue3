@@ -1,0 +1,25 @@
+{
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "build": "node scripts/build.js"
+  },
+  "name": "06k4-vue3",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "https://github.com/WangYeWei/06k4-vue3.git",
+  "author": "WangYeWei <826036140@qq.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.1.3",
+    "execa": "^6.0.0",
+    "rollup": "^2.67.1",
+    "rollup-plugin-typescript2": "^0.31.2",
+    "typescript": "^4.5.5"
+  },
+  "type": "module"
+}
