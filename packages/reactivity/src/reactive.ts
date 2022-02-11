@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: reactive api
- * @LastEditTime: 2022-02-11 19:27:34
+ * @LastEditTime: 2022-02-12 00:11:08
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\reactive.ts
  */
@@ -15,7 +15,7 @@ import {
 
 import {
   mutableHandlers,
-  shallowHandlers,
+  shallowReactiveHandlers,
   readonlyHandlers,
   shallowReadonlyHandlers,
 } from './baseHandlers'
@@ -81,7 +81,7 @@ export function shallowReactive<T extends object>(
   return createReactiveObject(
     target,
     false,
-    shallowHandlers
+    shallowReactiveHandlers
   )
 }
 

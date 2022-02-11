@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 公共方法
- * @LastEditTime: 2022-02-10 19:53:48
+ * @LastEditTime: 2022-02-12 00:07:20
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\shared\src\index.ts
  */
@@ -16,6 +16,7 @@ export const isObject = (val: unknown): val is Record<any, any> => val !== null 
 export const objectToString = Object.prototype.toString
 export const toTypeString = (value: unknown):string => objectToString.call(value)
 
+export const extend = Object.assign
 
 export const toRawType = (value: unknown): string => {
   return toTypeString(value).slice(8, -1)

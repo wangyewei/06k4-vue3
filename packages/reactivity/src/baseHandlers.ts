@@ -4,11 +4,11 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 实现new Proxy(target, handler)
- * @LastEditTime: 2022-02-11 19:32:19
+ * @LastEditTime: 2022-02-12 00:10:55
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\baseHandlers.ts
  */
-import { isObject } from '@vue/shared'
+import { isObject, extend} from '@vue/shared'
 import { reactive, readonly } from '.'
 import {
   Target
@@ -77,10 +77,14 @@ export const mutableHandlers: ProxyHandler<any> = {
   set
 }
 
-export const shallowHandlers = {
-  get: shallowGet,
-  set
-}
+export const shallowReactiveHandlers = extend(
+  {},
+  mutableHandlers,
+  {
+    get: shallowGet,
+    set: shallowSet
+  }
+)
 
 export const readonlyHandlers:ProxyHandler<object> = {
   get: readonlyGet,
@@ -92,13 +96,11 @@ export const readonlyHandlers:ProxyHandler<object> = {
   }
 }
 
-export const shallowReadonlyHandlers = {
-  get: shallowReadonlyGet,
-  set(target, key) {
-    console.warn(`Set opreation on key ${String(key)} failed: target is readonly.`,
-      target
-    )
-    return target
+export const shallowReadonlyHandlers = extend(
+  {},
+  readonlyHandlers,
+  {
+    get: shallowReadonlyGet
   }
-}
+)
 
