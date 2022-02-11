@@ -4,13 +4,21 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 依赖收集
- * @LastEditTime: 2022-02-11 23:56:50
+ * @LastEditTime: 2022-02-12 00:12:49
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\effect.ts
  */
 
 class ReactiveEffect<T = any> {
+  constructor(
+    public fn: () => T
+  ) {
+
+  }
   
+  run() {
+
+  }
 }
 
 export interface ReactiveEffectOptions {
@@ -29,6 +37,11 @@ export function effect<T = any>(
   options: ReactiveEffectOptions
 ): ReactiveEffectRunner{
   
+  const _effect = new ReactiveEffect(fn)
+
+  if(!options || !options.lazy) {
+    _effect.run()
+  }
   return '123' as unknown as ReactiveEffectRunner
 
 }
