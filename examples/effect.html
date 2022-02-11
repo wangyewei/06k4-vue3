@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: effect
- * @LastEditTime: 2022-02-12 00:43:03
+ * @LastEditTime: 2022-02-12 00:48:44
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\examples\effect.html
 -->
@@ -17,22 +17,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
+
   <body>
     <div id="app"></div>
     <script src="../node_modules/@vue/reactivity/dist/reactivity.global.js"></script>
     <script>
-      const { effect, reactive } = VueReactivity;
+      const { effect, reactive } = VueReactivity
 
-      const state = reactive({ name: "wangyewei", age: 21 });
+      const state = reactive({ name: "wangyewei", age: 21 })
 
-      console.log(app);
+      console.log(app)
       effect(() => {
-        app.innerHTML = state.name + " is " + state.age;
-      });
+        app.innerHTML = state.name + " is " + state.age
+      })
 
+      /* Todo: 依赖更新触发effect*/
       setTimeout(() => {
-        state.name = "王野未";
-      }, 1000);
+        state.name = "王野未"
+      }, 1000)
     </script>
   </body>
 </html>

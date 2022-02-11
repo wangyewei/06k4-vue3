@@ -4,39 +4,34 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: reactive api测试
- * @LastEditTime: 2022-02-11 23:32:24
+ * @LastEditTime: 2022-02-12 00:45:46
  * @Version: 06k4 vue3
- * @FilePath: \06k4-vue3\examples\reactive-api.html
+ * @FilePath: \06k4-vue3\examples\reactivity-api.html
 -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <script src="../node_modules/@vue/reactivity/dist/reactivity.global.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
 
-  <script>
-    const {
-      reactive,
-      shallowReactive,
-      readonly,
-      shallowReadonly
-    } = VueReactivity
+  <body>
+    <script src="../node_modules/@vue/reactivity/dist/reactivity.global.js"></script>
 
-    let state = readonly({
-      name: 'wangyewei',
-      age: {
-        thisYear: 21
-      }
-    })
+    <script>
+      const { reactive, shallowReactive, readonly, shallowReadonly } =
+        VueReactivity;
 
-    state.age.n = 100
+      let state = readonly({
+        name: "wangyewei",
+        age: {
+          thisYear: 21,
+        },
+      });
 
-
-  </script>
-</body>
+      state.age.n = 100;
+    </script>
+  </body>
 </html>
