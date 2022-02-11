@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: reactive api
- * @LastEditTime: 2022-02-11 02:19:35
+ * @LastEditTime: 2022-02-11 19:27:34
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\reactive.ts
  */
@@ -65,6 +65,7 @@ function getTargetType(value: Target) {
     ? TargetType.INVALID
     : targetTypeMap(toRawType(value))
 }
+
 
 export function reactive(target: object) {
   return createReactiveObject(target, false, mutableHandlers)
@@ -138,4 +139,6 @@ function createReactiveObject(
   )
   // 将要代理的对象和对应代理结果缓存起来
   proxyMap.set(target, proxy)
+
+  return proxy
 }

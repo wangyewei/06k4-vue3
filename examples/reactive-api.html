@@ -1,0 +1,42 @@
+<!--
+ * @Author: YeWei Wang
+ * @Date: 2022-02-11 19:08:36
+ * @WeChat: Studio06k4
+ * @Motto: 求知若渴，虚心若愚
+ * @Description: reactive api测试
+ * @LastEditTime: 2022-02-11 19:29:52
+ * @Version: 06k4 vue3
+ * @FilePath: \06k4-vue3\examples\reactive-api.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script src="../node_modules/@vue/reactivity/dist/reactivity.global.js"></script>
+
+  <script>
+    const {
+      reactive,
+      shallowReactive,
+      readonly,
+      shallowReadonly
+    } = VueReactivity
+
+    let state = shallowReadonly({
+      name: 'wangyewei',
+      age: {
+        thisYear: 21
+      }
+    })
+
+    state.age.n = 100
+
+
+  </script>
+</body>
+</html>
