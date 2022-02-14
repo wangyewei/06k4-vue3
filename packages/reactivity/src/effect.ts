@@ -4,29 +4,61 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 依赖收集
- * @LastEditTime: 2022-02-12 00:40:44
+ * @LastEditTime: 2022-02-14 19:12:10
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\effect.ts
  */
-
+import { TrackOpTypes } from './operations'
 import { extend } from "@vue/shared"
 
-class ReactiveEffect<T = any> {
+
+export let /**存储当前的Effect */ activeEffect: ReactiveEffect | undefined
+export let /**收集依赖 */ shouldTrack: Boolean = true
+export class ReactiveEffect<T = any> {
   active = true
+  deps = []
+  parent: ReactiveEffect | undefined = undefined
   constructor(
     public fn: () => T
   ) {
 
   }
-  
+
   run() {
-    if(!this.active) {
+    if (!this.active) {
       return this.fn()
     }
 
-    console.log('create effect')
-    console.log(this.fn)
-    return this.fn()
+    let parent: ReactiveEffect | undefined = activeEffect
+    let lastShouldTrack: Boolean = shouldTrack
+    // dfs
+    while (parent) {
+      if (parent === this) {
+        return
+      }
+      parent = parent.parent
+    }
+    try {
+
+      /**
+       * 执行的时候给全局的activeEffect赋值
+       * 利用全局属性来获取当前的Effect
+       */
+      this.parent = activeEffect
+      activeEffect = this
+      shouldTrack = true
+
+      // ;[this.parent, activeEffect] = [activeEffect, this]
+      // 执行用户传入的fn
+      return this.fn()
+    } finally {
+
+      // 重置
+      activeEffect = this.parent
+      shouldTrack = lastShouldTrack
+      this.parent = undefined
+    }
+
   }
 }
 
@@ -44,15 +76,15 @@ export interface ReactiveEffectRunner<T = any> {
 export function effect<T = any>(
   fn: () => T,
   options: ReactiveEffectOptions
-): ReactiveEffectRunner{
-  
+): ReactiveEffectRunner {
+
   const _effect = new ReactiveEffect(fn)
 
-  if(options) {
+  if (options) {
     extend(_effect, options)
   }
 
-  if(!options || !options.lazy) {
+  if (!options || !options.lazy) {
     // console.log()
     _effect.run()
   }
@@ -61,4 +93,10 @@ export function effect<T = any>(
   runner.effect = _effect
   return runner
 
+}
+
+// 拿到当前的effect
+export function track(target: object, type: TrackOpTypes, key: unknown) {
+  // 当前运行的effect
+  activeEffect
 }
