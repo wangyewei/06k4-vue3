@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 依赖收集
- * @LastEditTime: 2022-02-14 19:12:10
+ * @LastEditTime: 2022-02-14 19:15:28
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\effect.ts
  */
@@ -12,8 +12,8 @@ import { TrackOpTypes } from './operations'
 import { extend } from "@vue/shared"
 
 
-export let /**存储当前的Effect */ activeEffect: ReactiveEffect | undefined
-export let /**收集依赖 */ shouldTrack: Boolean = true
+export let /** 存储当前的Effect */ activeEffect: ReactiveEffect | undefined
+export let /** 收集依赖 */ shouldTrack: Boolean = true
 export class ReactiveEffect<T = any> {
   active = true
   deps = []
@@ -85,7 +85,6 @@ export function effect<T = any>(
   }
 
   if (!options || !options.lazy) {
-    // console.log()
     _effect.run()
   }
 
@@ -95,6 +94,7 @@ export function effect<T = any>(
 
 }
 
+// 让对象中的某个属性 收集当前其对应的effect函数
 // 拿到当前的effect
 export function track(target: object, type: TrackOpTypes, key: unknown) {
   // 当前运行的effect
