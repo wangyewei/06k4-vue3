@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 依赖收集
- * @LastEditTime: 2022-02-14 19:15:28
+ * @LastEditTime: 2022-02-15 17:56:56
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\effect.ts
  */
@@ -96,7 +96,15 @@ export function effect<T = any>(
 
 // 让对象中的某个属性 收集当前其对应的effect函数
 // 拿到当前的effect
-export function track(target: object, type: TrackOpTypes, key: unknown) {
+export function track(
+  target: object,
+  type: TrackOpTypes,
+  key: unknown) {
   // 当前运行的effect
-  activeEffect
+  activeEffect;
+  console.log(
+    target,
+    type,
+    key
+  )
 }

@@ -4,11 +4,13 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 实现new Proxy(target, handler)
- * @LastEditTime: 2022-02-12 00:10:55
+ * @LastEditTime: 2022-02-15 18:03:11
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\baseHandlers.ts
  */
-import { isObject, extend} from '@vue/shared'
+import { track } from './effect'
+import { TrackOpTypes } from './operations'
+import { isObject, extend } from '@vue/shared'
 import { reactive, readonly } from '.'
 import {
   Target
@@ -17,7 +19,7 @@ import {
 /**
  * 拦截获取功能
  */
- function createGetter(isReadonly = false, shallow = false) {
+function createGetter(isReadonly = false, shallow = false) {
   return function get(
     target: Target,
     key: string | symbol, // 源对象的某个属性
@@ -30,17 +32,19 @@ import {
     // reflect使用可以不使用proxy
     const res = Reflect.get(target, key, receiver) // 反射 ~ target[key]
 
-    if(!isReadonly) {
+    if (!isReadonly) {
+      track(target, TrackOpTypes.GET, key)
+    }
+
+    if (shallow) {
       return res
     }
 
-    if(shallow) {
-      return res
-    }
-
-    if(isObject(res)) {
+    if (isObject(res)) {
       return isReadonly ? readonly(res) : reactive(res)
     }
+
+    return res
   }
 }
 
@@ -48,7 +52,7 @@ import {
  * 拦截设置功能
  */
 
-function createSetter(isShallow = false){
+function createSetter(isShallow = false) {
   return function set(
     target: Target,
     key: string | symbol,
@@ -86,7 +90,7 @@ export const shallowReactiveHandlers = extend(
   }
 )
 
-export const readonlyHandlers:ProxyHandler<object> = {
+export const readonlyHandlers: ProxyHandler<object> = {
   get: readonlyGet,
   set(target, key) {
     console.warn(`Set opreation on key ${String(key)} failed: target is readonly.`,
