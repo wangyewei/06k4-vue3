@@ -4,12 +4,14 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 依赖收集
- * @LastEditTime: 2022-02-15 17:56:56
+ * @LastEditTime: 2022-02-16 01:18:59
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\effect.ts
  */
+
 import { TrackOpTypes } from './operations'
 import { extend } from "@vue/shared"
+import {createDep} from './dep'
 
 
 export let /** 存储当前的Effect */ activeEffect: ReactiveEffect | undefined
@@ -94,17 +96,38 @@ export function effect<T = any>(
 
 }
 
-// 让对象中的某个属性 收集当前其对应的effect函数
+type KeyToDepMap = Map<any, any>
+/**
+ * weakMap结构类似于Map 但是只接收对象为键名
+ * 键名所致的对象不计入垃圾回收机制
+ */
+const targetMap = /** 维护所有的依赖 */ new WeakMap<any, KeyToDepMap>()
+
+// 让对象中的某个属性 收集当前其对应的effect函数 依赖收集
 // 拿到当前的effect
 export function track(
   target: object,
   type: TrackOpTypes,
   key: unknown) {
   // 当前运行的effect
-  activeEffect;
-  console.log(
-    target,
-    type,
-    key
-  )
+  if (activeEffect && shouldTrack) {
+
+    let depsMap = targetMap.get(target)
+
+    if (!depsMap) {
+      targetMap.set(target, (depsMap = new Map()))
+    }
+
+    let dep = depsMap.get(key)
+
+    if(!dep) {
+      depsMap.set(key, (dep = createDep()))
+    } 
+    
+    if(!dep.has(activeEffect)) {
+      dep.add(activeEffect)
+    }
+
+    console.log(targetMap)
+  }
 }

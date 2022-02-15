@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 实现new Proxy(target, handler)
- * @LastEditTime: 2022-02-15 18:03:11
+ * @LastEditTime: 2022-02-16 01:14:08
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\baseHandlers.ts
  */
@@ -33,7 +33,7 @@ function createGetter(isReadonly = false, shallow = false) {
     const res = Reflect.get(target, key, receiver) // 反射 ~ target[key]
 
     if (!isReadonly) {
-      track(target, TrackOpTypes.GET, key)
+      track(target, TrackOpTypes.GET, key)         
     }
 
     if (shallow) {
