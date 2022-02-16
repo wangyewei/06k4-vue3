@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 公共方法
- * @LastEditTime: 2022-02-16 23:50:35
+ * @LastEditTime: 2022-02-17 00:10:53
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\shared\src\index.ts
  */
@@ -19,7 +19,12 @@ export const isArray = Array.isArray
 export const isFunction = (val: unknown): val is Function => typeof val === 'function'
 export const isNumber = (val: unknown): val is number => typeof val === 'number'
 export const isString = (val: unknown): val is string => typeof val === 'string'
-
+export const isIntegerKey = /**是否为字符串数字 */ (key: unknown) => {
+  return isString(key) &&
+  key !== 'NaN' &&
+  key[0] !== '-' &&
+  '' + parseInt(key, 10) === key
+}
 /**数据转换相关方法 */
 
 export const objectToString = Object.prototype.toString
@@ -31,4 +36,17 @@ export const toRawType = (value: unknown): string => {
 /**对象相关方法 */
 
 export const extend = Object.assign
+const hasOwnProperty = Object.prototype.hasOwnProperty
+export const hasOwn = (
+  val: object,
+  key: string | symbol
+) : key is keyof typeof val => hasOwnProperty.call(val, key)
 
+// 判断值是否修改
+export const hasChanged = (
+  value: any,
+  oldValue: any
+): boolean => {
+  // Object.is 用于判断两个值是否相等
+  return !Object.is(value, oldValue)
+}

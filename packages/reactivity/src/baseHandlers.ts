@@ -4,13 +4,13 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 实现new Proxy(target, handler)
- * @LastEditTime: 2022-02-16 23:41:05
+ * @LastEditTime: 2022-02-17 00:05:52
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\baseHandlers.ts
  */
 import { track } from './effect'
 import { TrackOpTypes } from './operations'
-import { isObject, extend } from '@vue/shared'
+import { isObject, extend, isArray, isIntegerKey, hasOwn } from '@vue/shared'
 import { reactive, readonly } from '.'
 import {
   Target
@@ -33,7 +33,7 @@ function createGetter(isReadonly = false, shallow = false) {
     const res = Reflect.get(target, key, receiver) // 反射 ~ target[key]
 
     if (!isReadonly) {
-      track(target, TrackOpTypes.GET, key)         
+      track(target, TrackOpTypes.GET, key)
     }
 
     if (shallow) {
@@ -62,15 +62,26 @@ function createSetter(Shallow = false) {
 
     let oldValue = /** 获取旧值*/(target as any)[key]
 
+    // 判断值是新增还是老值修改
+    const hadKey =
+      isArray(target) && isIntegerKey(key) ?
+        Number(key) < target.length :
+        hasOwn(target, key)
+
+
+
     const result = Reflect.set(target, key, value, receiver) // target[key] = value
 
+    if(!hadKey) {
+      // 新增
+    }
     /**
      * 区分是新增的 还是要修改的
      */
-    
+
     // 当数据更新时， 通知对应的effect重新执行
 
-    
+
     return result
   }
 }
