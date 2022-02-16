@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: reactive api测试
- * @LastEditTime: 2022-02-12 00:45:46
+ * @LastEditTime: 2022-02-17 00:28:24
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\examples\reactivity-api.html
 -->
@@ -22,16 +22,19 @@
 
     <script>
       const { reactive, shallowReactive, readonly, shallowReadonly } =
-        VueReactivity;
+        VueReactivity
 
       let state = readonly({
         name: "wangyewei",
         age: {
           thisYear: 21,
         },
-      });
+        skills: ["vue3", "typescript", "react", "javascript"],
+      })
 
-      state.age.n = 100;
+      setTimeout(() => {
+        state.skills.push("nodejs")
+      }, 1000)
     </script>
   </body>
 </html>

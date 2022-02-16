@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: effect
- * @LastEditTime: 2022-02-15 18:03:54
+ * @LastEditTime: 2022-02-17 00:30:00
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\examples\effect.html
 -->
@@ -24,14 +24,18 @@
     <script>
       const { effect, reactive } = VueReactivity
 
-      const state = reactive({ name: "wangyewei", age: 21 })
+      const state = reactive({
+        name: "wangyewei",
+        age: 21,
+        skills: ["vue3", "react", "typescript"],
+      })
 
       effect(() => {
         app.innerHTML = state.name + " is " + state.age
       })
       /* Todo: 依赖更新触发effect*/
       setTimeout(() => {
-        state.name = "王野未"
+        state.xxx = false
       }, 3000)
     </script>
   </body>
