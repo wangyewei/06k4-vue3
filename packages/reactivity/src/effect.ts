@@ -4,12 +4,12 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 依赖收集
- * @LastEditTime: 2022-02-16 23:39:06
+ * @LastEditTime: 2022-02-17 00:22:45
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\effect.ts
  */
 
-import { TrackOpTypes } from './operations'
+import { TrackOpTypes, TriggerOpTypes } from './operations'
 import { extend } from "@vue/shared"
 import {createDep} from './dep'
 
@@ -104,7 +104,6 @@ type KeyToDepMap = Map<any, any>
 const targetMap = /** 维护所有的依赖 */ new WeakMap<any, KeyToDepMap>()
 
 // 让对象中的某个属性 收集当前其对应的effect函数 依赖收集
-// 拿到当前的effect
 export function track(
   target: object,
   type: TrackOpTypes,
@@ -130,4 +129,15 @@ export function track(
 
     console.log(targetMap)
   }
+}
+
+// 依赖触发
+export function trigger(
+  target: object,
+  type: TriggerOpTypes,
+  key?: unknown,
+  newValue?: unknown,
+  oldValue?: unknown
+) {
+
 }

@@ -4,12 +4,18 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 实现new Proxy(target, handler)
- * @LastEditTime: 2022-02-17 00:13:49
+ * @LastEditTime: 2022-02-17 00:21:46
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\baseHandlers.ts
  */
-import { track } from './effect'
-import { TrackOpTypes } from './operations'
+import {
+  track,
+  trigger
+} from './effect'
+import {
+  TrackOpTypes,
+  TriggerOpTypes
+} from './operations'
 import {
   isObject,
   extend,
@@ -73,9 +79,7 @@ function createSetter(Shallow = false) {
     const hadKey =
       isArray(target) && isIntegerKey(key) ?
         Number(key) < target.length :
-        hasOwn(target, key)
-
-
+        hasOwn(target, key);
 
     const result = Reflect.set(target, key, value, receiver) // target[key] = value
 
@@ -85,8 +89,11 @@ function createSetter(Shallow = false) {
 
     if (!hadKey) {
       // 新增
+      trigger(target, TriggerOpTypes.ADD, key, value)
     } else if (hasChanged(oldValue, value)) {
       // 修改
+      trigger(target, TriggerOpTypes.SET, key, value, oldValue)
+
     }
 
     // 当数据更新时， 通知对应的effect重新执行
