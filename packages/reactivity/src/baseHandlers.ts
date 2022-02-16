@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 实现new Proxy(target, handler)
- * @LastEditTime: 2022-02-16 01:21:43
+ * @LastEditTime: 2022-02-16 23:41:05
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\baseHandlers.ts
  */
@@ -52,7 +52,7 @@ function createGetter(isReadonly = false, shallow = false) {
  * 拦截设置功能
  */
 
-function createSetter(isShallow = false) {
+function createSetter(Shallow = false) {
   return function set(
     target: Target,
     key: string | symbol,
@@ -60,8 +60,14 @@ function createSetter(isShallow = false) {
     receiver: object
   ) {
 
+    let oldValue = /** 获取旧值*/(target as any)[key]
+
     const result = Reflect.set(target, key, value, receiver) // target[key] = value
 
+    /**
+     * 区分是新增的 还是要修改的
+     */
+    
     // 当数据更新时， 通知对应的effect重新执行
 
     
