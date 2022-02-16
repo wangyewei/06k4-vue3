@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: reactive api
- * @LastEditTime: 2022-02-12 00:45:40
+ * @LastEditTime: 2022-02-17 00:25:23
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\reactive.ts
  */
@@ -92,7 +92,7 @@ export function shallowReadonly<T extends object>(target: T): Readonly<T> {
   return createReactiveObject(target, true, shallowReadonlyHandlers);
 }
 
-// 自动垃圾回收，不造成内存泄露，存储的Key只能是对象
+// 类似于Map 存储的键名只能为对象
 export const reactiveMap = new WeakMap<Target, any>();
 export const shallowReactiveMap = new WeakMap<Target, any>();
 export const readonlyMap = new WeakMap<Target, any>();

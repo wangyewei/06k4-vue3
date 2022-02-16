@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 依赖收集
- * @LastEditTime: 2022-02-17 00:22:45
+ * @LastEditTime: 2022-02-17 00:23:53
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\effect.ts
  */
@@ -127,7 +127,7 @@ export function track(
       dep.add(activeEffect)
     }
 
-    console.log(targetMap)
+    console.log('依赖收集', targetMap)
   }
 }
 
@@ -139,5 +139,5 @@ export function trigger(
   newValue?: unknown,
   oldValue?: unknown
 ) {
-
+  console.log('依赖触发', target, type, key, newValue, oldValue)
 }

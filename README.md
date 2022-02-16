@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: readme
- * @LastEditTime: 2022-02-16 00:30:58
+ * @LastEditTime: 2022-02-17 00:26:29
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\README.md
 -->
@@ -21,12 +21,14 @@
 
 #### reactivity
 
-💥reactive
+💥 reactive
 
-💥shallowReactive
+💥 shallowReactive
 
-💥readonly
+💥 readonly
 
-💥shallowReadonly
+💥 shallowReadonly
 
-💥track 依赖收集
+💥 track 依赖收集
+
+💥 trigger 依赖触发
