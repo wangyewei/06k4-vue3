@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: effect
- * @LastEditTime: 2022-02-17 00:30:00
+ * @LastEditTime: 2022-02-17 20:37:23
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\examples\effect.html
 -->
@@ -31,11 +31,11 @@
       })
 
       effect(() => {
-        app.innerHTML = state.name + " is " + state.age
+        app.innerHTML = state.skills.length
       })
       /* Todo: 依赖更新触发effect*/
       setTimeout(() => {
-        state.xxx = false
+        state.skills.length = 1
       }, 3000)
     </script>
   </body>

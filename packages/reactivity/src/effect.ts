@@ -4,14 +4,14 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 依赖收集
- * @LastEditTime: 2022-02-17 00:23:53
+ * @LastEditTime: 2022-02-17 20:38:42
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\effect.ts
  */
 
 import { TrackOpTypes, TriggerOpTypes } from './operations'
-import { extend } from "@vue/shared"
-import {createDep} from './dep'
+import { extend, isArray } from "@vue/shared"
+import { createDep, Dep } from './dep'
 
 
 export let /** 存储当前的Effect */ activeEffect: ReactiveEffect | undefined
@@ -119,11 +119,11 @@ export function track(
 
     let dep = depsMap.get(key)
 
-    if(!dep) {
+    if (!dep) {
       depsMap.set(key, (dep = createDep()))
-    } 
-    
-    if(!dep.has(activeEffect)) {
+    }
+
+    if (!dep.has(activeEffect)) {
       dep.add(activeEffect)
     }
 
@@ -139,5 +139,48 @@ export function trigger(
   newValue?: unknown,
   oldValue?: unknown
 ) {
-  console.log('依赖触发', target, type, key, newValue, oldValue)
+  // 如果属性没有收集过Effect就不需要进行过任何操作
+  const depsMap = targetMap.get(target)
+  if (!depsMap) return;
+
+
+  /**
+   * 1. 看修改的是不是数组的长度，因为修改长度影响比较大
+   *    - 
+   */
+  let deps: (Dep | undefined)[] = []
+
+  if (key === 'length' && isArray(target)) {
+    depsMap.forEach((dep, key) => {
+
+      if (key === 'length' || key > (newValue as number)) {
+        deps.push(dep)
+      }
+    })
+  } else {
+    // 可能是对象
+  }
+
+  // if (deps.length === 1) {
+  //   console.log('here')
+  // } else {
+  // 将要执行的所有effect全部存储到一个新的集合中
+  // 最终一起执行
+  const effects: ReactiveEffect[] = []
+
+  for (const dep of deps) {
+    if (dep) {
+      effects.push(...dep)
+    }
+  }
+
+  effects.forEach((effect: ReactiveEffect) => {
+    effect.fn()
+  })
+  // }
+
+
+
+
+  // console.log('依赖触发', target, type, key, newValue, oldValue)
 }
