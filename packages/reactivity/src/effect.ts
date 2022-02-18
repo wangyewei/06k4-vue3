@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 依赖收集
- * @LastEditTime: 2022-02-18 17:33:00
+ * @LastEditTime: 2022-02-18 17:41:24
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\effect.ts
  */
@@ -131,6 +131,15 @@ export function track(
   }
 }
 
+/** 依赖更新重新执行effect */
+export function triggerEffects(
+  dep: Dep | ReactiveEffect[]
+) {
+  for (const effect of isArray(dep) ? dep : [...dep]) {
+    effect.run()
+  }
+}
+
 // 依赖触发
 export function trigger(
   target: object,
@@ -159,6 +168,22 @@ export function trigger(
     })
   } else {
     // 可能是对象
+    if(key !== void 0) {
+      deps.push(depsMap.get(key))
+    }
+
+    // 执行操作
+    switch(type) {
+      case TriggerOpTypes.ADD:
+        if(isArray(target)) {
+          // deps.push(depsMap.get())
+        }
+      break
+
+      case TriggerOpTypes.DELETE:
+
+      break
+    }
   }
 
   // if (deps.length === 1) {
@@ -175,15 +200,5 @@ export function trigger(
   }
 
   triggerEffects(createDep(effects))
-  // }
-
-  // console.log('依赖触发', target, type, key, newValue, oldValue)
 }
 
-export function triggerEffects(
-  dep: Dep | ReactiveEffect[]
-) {
-  for (const effect of isArray(dep) ? dep : [...dep]) {
-    effect.run()
-  }
-}
