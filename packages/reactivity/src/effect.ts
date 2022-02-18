@@ -4,13 +4,13 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 依赖收集
- * @LastEditTime: 2022-02-18 17:41:24
+ * @LastEditTime: 2022-02-18 21:07:51
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\effect.ts
  */
 
 import { TrackOpTypes, TriggerOpTypes } from './operations'
-import { extend, isArray } from "@vue/shared"
+import { extend, isArray, isIntegerKey } from "@vue/shared"
 import { createDep, Dep } from './dep'
 
 
@@ -131,16 +131,7 @@ export function track(
   }
 }
 
-/** 依赖更新重新执行effect */
-export function triggerEffects(
-  dep: Dep | ReactiveEffect[]
-) {
-  for (const effect of isArray(dep) ? dep : [...dep]) {
-    effect.run()
-  }
-}
-
-// 依赖触发
+// 找属性对应的effect让其执行
 export function trigger(
   target: object,
   type: TriggerOpTypes,
@@ -168,21 +159,24 @@ export function trigger(
     })
   } else {
     // 可能是对象
-    if(key !== void 0) {
+    if (key !== void 0) {
       deps.push(depsMap.get(key))
     }
 
     // 执行操作
-    switch(type) {
+    switch (type) {
       case TriggerOpTypes.ADD:
-        if(isArray(target)) {
+        if (!isArray(target)) {
           // deps.push(depsMap.get())
+        } else if (isIntegerKey(target)) {
+          // 如果添加了一个索引就触发长度的更新
+          deps.push(depsMap.get('length'))
         }
-      break
+        break
 
       case TriggerOpTypes.DELETE:
 
-      break
+        break
     }
   }
 
@@ -202,3 +196,11 @@ export function trigger(
   triggerEffects(createDep(effects))
 }
 
+/** 依赖更新重新执行effect */
+export function triggerEffects(
+  dep: Dep | ReactiveEffect[]
+) {
+  for (const effect of isArray(dep) ? dep : [...dep]) {
+    effect.run()
+  }
+}
