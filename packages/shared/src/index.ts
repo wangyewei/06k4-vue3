@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 公共方法
- * @LastEditTime: 2022-02-17 00:10:53
+ * @LastEditTime: 2022-02-18 21:13:45
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\shared\src\index.ts
  */
@@ -21,10 +21,11 @@ export const isNumber = (val: unknown): val is number => typeof val === 'number'
 export const isString = (val: unknown): val is string => typeof val === 'string'
 export const isIntegerKey = /**是否为字符串数字 */ (key: unknown) => {
   return isString(key) &&
-  key !== 'NaN' &&
-  key[0] !== '-' &&
-  '' + parseInt(key, 10) === key
+    key !== 'NaN' &&
+    key[0] !== '-' &&
+    '' + parseInt(key, 10) === key
 }
+export const isMap = (val: unknown): val is Map<any, any> => toTypeString(val) === '[object Map]'
 /**数据转换相关方法 */
 
 export const objectToString = Object.prototype.toString
@@ -40,7 +41,7 @@ const hasOwnProperty = Object.prototype.hasOwnProperty
 export const hasOwn = (
   val: object,
   key: string | symbol
-) : key is keyof typeof val => hasOwnProperty.call(val, key)
+): key is keyof typeof val => hasOwnProperty.call(val, key)
 
 // 判断值是否修改
 export const hasChanged = (
