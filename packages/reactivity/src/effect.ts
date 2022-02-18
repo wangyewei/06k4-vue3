@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 依赖收集
- * @LastEditTime: 2022-02-17 20:38:42
+ * @LastEditTime: 2022-02-18 17:33:00
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\effect.ts
  */
@@ -99,7 +99,7 @@ export function effect<T = any>(
 type KeyToDepMap = Map<any, any>
 /**
  * weakMap结构类似于Map 但是只接收对象为键名
- * 键名所致的对象不计入垃圾回收机制
+ * 键名所指的对象不计入垃圾回收机制
  */
 const targetMap = /** 维护所有的依赖 */ new WeakMap<any, KeyToDepMap>()
 
@@ -174,13 +174,16 @@ export function trigger(
     }
   }
 
-  effects.forEach((effect: ReactiveEffect) => {
-    effect.fn()
-  })
+  triggerEffects(createDep(effects))
   // }
 
-
-
-
   // console.log('依赖触发', target, type, key, newValue, oldValue)
+}
+
+export function triggerEffects(
+  dep: Dep | ReactiveEffect[]
+) {
+  for (const effect of isArray(dep) ? dep : [...dep]) {
+    effect.run()
+  }
 }
