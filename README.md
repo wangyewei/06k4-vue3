@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: readme
- * @LastEditTime: 2022-02-17 00:26:29
+ * @LastEditTime: 2022-02-19 19:00:22
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\README.md
 -->
@@ -32,3 +32,5 @@
 💥 track 依赖收集
 
 💥 trigger 依赖触发
+
+💥 支持 effect.stop()
