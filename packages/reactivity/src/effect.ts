@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 依赖收集
- * @LastEditTime: 2022-02-18 21:14:59
+ * @LastEditTime: 2022-02-19 18:49:56
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\effect.ts
  */
@@ -180,8 +180,17 @@ export function trigger(
         break
 
       case TriggerOpTypes.DELETE:
-
+        if(isArray(target)) {
+          deps.push(depsMap.get(ITERATE_KEY))
+          if(isMap(target)) {
+            deps.push(depsMap.get(MAP_KEY_ITERATE_KEY))
+          }
+        }
         break
+      case TriggerOpTypes.SET:
+        if(isMap(target)) {
+          deps.push(depsMap.get(ITERATE_KEY))
+        }
     }
   }
 
