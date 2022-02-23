@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: effect
- * @LastEditTime: 2022-02-17 20:37:23
+ * @LastEditTime: 2022-02-23 21:48:04
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\examples\effect.html
 -->
@@ -31,11 +31,11 @@
       })
 
       effect(() => {
-        app.innerHTML = state.skills.length
+        app.innerHTML = state.skills
       })
       /* Todo: 依赖更新触发effect*/
       setTimeout(() => {
-        state.skills.length = 1
+        state.skills[1] = "react hooks"
       }, 3000)
     </script>
   </body>
