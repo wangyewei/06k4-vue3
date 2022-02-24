@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 实现new Proxy(target, handler)
- * @LastEditTime: 2022-02-17 00:21:46
+ * @LastEditTime: 2022-02-24 17:53:10
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\baseHandlers.ts
  */
@@ -95,10 +95,7 @@ function createSetter(Shallow = false) {
       trigger(target, TriggerOpTypes.SET, key, value, oldValue)
 
     }
-
     // 当数据更新时， 通知对应的effect重新执行
-
-
     return result
   }
 }

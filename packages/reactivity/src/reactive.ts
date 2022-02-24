@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: reactive api
- * @LastEditTime: 2022-02-17 00:25:23
+ * @LastEditTime: 2022-02-24 17:51:52
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\reactive.ts
  */
@@ -102,7 +102,6 @@ function createReactiveObject(
   target: Target,
   isReadonly: boolean,
   baseHanderls: ProxyHandler<any>,
-  collectionHandlers?: ProxyHandler<any>
 ) {
   if (!isObject(target)) {
     return target;
