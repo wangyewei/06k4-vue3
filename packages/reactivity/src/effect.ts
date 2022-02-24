@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 依赖收集
- * @LastEditTime: 2022-02-24 17:47:50
+ * @LastEditTime: 2022-02-24 22:06:31
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\effect.ts
  */
@@ -25,7 +25,7 @@ export class ReactiveEffect<T = any> {
   constructor(
     public fn: () => T,
     public scheduler: EffectScheduler | null = null
-    
+
   ) {
 
   }
@@ -73,7 +73,7 @@ export class ReactiveEffect<T = any> {
       // 这是为了防止重复的调用，执行 stop 逻辑
       cleanUpEffect(this)
       // 执行传入的回调函数
-      if(this.onStop) {
+      if (this.onStop) {
         this.onStop()
       }
       this.active = false
@@ -237,13 +237,22 @@ export function triggerEffects(
   dep: Dep | ReactiveEffect[]
 ) {
   for (const effect of isArray(dep) ? dep : [...dep]) {
-    if(effect.scheduler) {
+    if (effect.scheduler) {
       // scheduler 可以让用户自己选择调用的时机
       // 这样就可以灵活的控制调用了
       // 在 runtime-core 中，就是使用了 scheduler 实现了在 next ticker 中调用的逻辑
       effect.scheduler()
-    }else {
+    } else {
       effect.run()
     }
+  }
+}
+
+export function trackEffects(
+  dep: Dep
+) {
+  if(!dep.has(activeEffect!)) {
+    dep.add(activeEffect!)
+    activeEffect!.deps.push(dep)
   }
 }
