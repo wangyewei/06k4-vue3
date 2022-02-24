@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 依赖收集
- * @LastEditTime: 2022-02-19 18:59:06
+ * @LastEditTime: 2022-02-24 17:47:50
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\effect.ts
  */
@@ -13,6 +13,7 @@ import { TrackOpTypes, TriggerOpTypes } from './operations'
 import { extend, isArray, isIntegerKey, isMap } from "@vue/shared"
 import { createDep, Dep } from './dep'
 
+export type EffectScheduler = (...args: any[]) => any
 
 export let /** 存储当前的Effect */ activeEffect: ReactiveEffect | undefined
 export let /** 收集依赖 */ shouldTrack: Boolean = true
@@ -22,7 +23,9 @@ export class ReactiveEffect<T = any> {
   parent: ReactiveEffect | undefined = undefined
   public onStop?: () => void
   constructor(
-    public fn: () => T
+    public fn: () => T,
+    public scheduler: EffectScheduler | null = null
+    
   ) {
 
   }
@@ -88,6 +91,8 @@ export function cleanUpEffect(effect: ReactiveEffect) {
 
 export interface ReactiveEffectOptions {
   lazy?: boolean,
+  scheduler?: EffectScheduler,
+  onStop?: () => void
 }
 export interface ReactiveEffectRunner<T = any> {
   (): T
@@ -232,6 +237,13 @@ export function triggerEffects(
   dep: Dep | ReactiveEffect[]
 ) {
   for (const effect of isArray(dep) ? dep : [...dep]) {
-    effect.run()
+    if(effect.scheduler) {
+      // scheduler 可以让用户自己选择调用的时机
+      // 这样就可以灵活的控制调用了
+      // 在 runtime-core 中，就是使用了 scheduler 实现了在 next ticker 中调用的逻辑
+      effect.scheduler()
+    }else {
+      effect.run()
+    }
   }
 }
