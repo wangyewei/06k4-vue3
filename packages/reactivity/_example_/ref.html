@@ -1,0 +1,36 @@
+<!--
+ * @Author: YeWei Wang
+ * @Date: 2022-02-26 18:13:50
+ * @WeChat: Studio06k4
+ * @Motto: 求知若渴，虚心若愚
+ * @Description: ref demo
+ * @LastEditTime: 2022-02-26 18:41:51
+ * @Version: 06k4 vue3
+ * @FilePath: \06k4-vue3\packages\reactivity\_example_\ref.html
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="../../../node_modules/@vue/reactivity/dist/reactivity.global.js"></script>
+    <script>
+      const { ref } = VueReactivity
+
+      let name = ref("wangyewei")
+
+      console.log(name.value)
+      app.innerHTML = name.value
+      setTimeout(() => {
+        name.value = "王野未"
+        console.log(name.value)
+      }, 3000)
+    </script>
+  </body>
+</html>

@@ -4,11 +4,14 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: ref
- * @LastEditTime: 2022-02-24 22:08:41
+ * @LastEditTime: 2022-02-26 18:40:45
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\ref.ts
  */
 
+import {
+  hasChanged
+} from '@vue/shared'
 import {
   createDep,
   Dep
@@ -22,7 +25,8 @@ import {
 import {
   activeEffect,
   shouldTrack,
-  trackEffects
+  trackEffects,
+  triggerEffects
 } from './effect'
 
 type RefBase<T> = {
@@ -56,6 +60,7 @@ class refImpl<T> {
   ) {
     this._rawValue = value
     this._value = __v_isShallow ? value : toReactive(value)
+    this.dep = createDep()
   }
 
   get value() {
@@ -63,6 +68,19 @@ class refImpl<T> {
     trackRefValue(this)
     return this._value
   }
+
+  set value(newVal) {
+    if (hasChanged(newVal, this._rawValue)) {
+      this._rawValue = newVal
+      this.value = this.__v_isShallow ? newVal : toReactive(newVal)
+
+      triggerRefValue(this)
+    }
+  }
+}
+
+export function triggerRefValue(ref: RefBase<any>) {
+  triggerEffects(ref.dep)
 }
 
 export function isRef<T>(
@@ -89,6 +107,6 @@ export function ref<T extends object>(
   value: T
 ): T
 export function ref(value?: unknown) {
-  createRef(value, false)
+  return createRef(value, false)
 }
 
