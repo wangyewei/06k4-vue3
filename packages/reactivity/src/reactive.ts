@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: reactive api
- * @LastEditTime: 2022-02-24 17:51:52
+ * @LastEditTime: 2022-02-28 15:33:29
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\reactive.ts
  */
@@ -30,7 +30,7 @@ export interface Target {
   [ReactiveFlags.IS_REACTIVE]?: boolean;
   [ReactiveFlags.IS_READONLY]?: boolean;
   [ReactiveFlags.IS_SHALLOW]?: boolean;
-  [ReactiveFlags.RAW]?: boolean;
+  [ReactiveFlags.RAW]?: any;
 }
 
 const enum TargetType {
@@ -55,15 +55,18 @@ function targetTypeMap(rawType: string) {
   }
 }
 
-function getTargetType(value: Target) {
-  // 是否跳过或者是否能添加属性
-  // isExtensible判断一个对象是否可以添加属性
-  return value[ReactiveFlags.SKIP] || !Object.isExtensible(value)
-    ? TargetType.INVALID
-    : targetTypeMap(toRawType(value));
-}
+// function getTargetType(value: Target) {
+//   // 是否跳过或者是否能添加属性
+//   // isExtensible判断一个对象是否可以添加属性
+//   return value[ReactiveFlags.SKIP] || !Object.isExtensible(value)
+//     ? TargetType.INVALID
+//     : targetTypeMap(toRawType(value));
+// }
 
 export function reactive(target: object) {
+  if(isReadonly(target)) {
+    return target
+  }
   return createReactiveObject(target, false, mutableHandlers);
 }
 
@@ -126,4 +129,16 @@ function createReactiveObject(
   proxyMap.set(target, proxy);
 
   return proxy;
+}
+
+
+export function toRaw<T>(observed: T): T {
+  const raw = observed && (observed as Target)[ReactiveFlags.RAW]
+  return raw ? toRaw(raw) : observed
+}
+
+
+/** 判断目标是否只读 */
+export function isReadonly(value: unknown):boolean {
+  return !!(value && (value as Target)[ReactiveFlags.IS_READONLY])
 }

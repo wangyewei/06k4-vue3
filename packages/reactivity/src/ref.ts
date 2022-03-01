@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: ref
- * @LastEditTime: 2022-02-26 18:40:45
+ * @LastEditTime: 2022-02-28 16:37:13
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\ref.ts
  */
@@ -28,6 +28,7 @@ import {
   trackEffects,
   triggerEffects
 } from './effect'
+import { toRaw } from './reactive'
 
 type RefBase<T> = {
   dep?: Dep
@@ -36,6 +37,7 @@ type RefBase<T> = {
 
 export function trackRefValue(ref: RefBase<any>) {
   if (shouldTrack && activeEffect) {
+    console.log('in')
     trackEffects(ref.dep || (ref.dep = createDep()))
   }
 }
@@ -58,9 +60,9 @@ class refImpl<T> {
     value: T,
     public readonly __v_isShallow: boolean
   ) {
-    this._rawValue = value
+
+    this._rawValue = __v_isShallow ? value : toRaw(value)
     this._value = __v_isShallow ? value : toReactive(value)
-    this.dep = createDep()
   }
 
   get value() {
