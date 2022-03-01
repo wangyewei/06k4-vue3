@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: readme
- * @LastEditTime: 2022-03-01 15:56:09
+ * @LastEditTime: 2022-03-01 16:12:16
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\README.md
 -->
@@ -19,15 +19,47 @@
 
 🎈 深入 Vue 核心逻辑
 
-#### reactivity 响应式系统
+## 响应式 API
 
-💥 reactive
+### reactivity 响应式基础 API
 
-💥 shallowReactive
+💥 reactive 返回对象的响应式副本
 
-💥 readonly
+💥 readonly 返回对象的只读代理
 
-💥 shallowReadonly
+🚫 isProxy 检查对象是否由`reactive`或`readonly`创建的 proxy
+
+🚫 isReactive 检查对象是否是由`reactive`创建的响应式代理
+
+🚫 isReadonly 检查对象是否是由`readonly`创建的只读代理
+
+💥 toRaw 返回`reactive`或`readonly`代理的原始对象
+
+🚫 markRaw 标记一个对象，使其永远不会转换为 proxy。返回对象本身
+
+💥 shallowReactive 创建一个响应式代理，它跟踪其自身 property 的响应性，但不执行嵌套对象的深层响应式转换 (暴露原始值)
+
+💥 shallowReadonly 创建一个 proxy，使其自身的 property 为只读，但不执行嵌套对象的深度只读转换 (暴露原始值)
+
+### Refs
+
+💥 ref 接受一个内部值并返回一个响应式且可变的 ref 对象。ref 对象仅有一个 .value property，指向该内部值
+
+🚫 unref
+
+🚫 toRef
+
+🚫 toRefs
+
+🚫 isRef
+
+🚫 customRef
+
+🚫 shallowRef
+
+🚫 triggerRef
+
+### Effect
 
 💥 track 依赖收集
 
@@ -37,9 +69,7 @@
 
 💥 支持 effect.scheduler()
 
-💥 支持 ref()
-
-##### 单模块调试
+#### 单模块调试
 
 `yarn install`
 `yarn run buuild`
