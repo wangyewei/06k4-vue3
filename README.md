@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: readme
- * @LastEditTime: 2022-03-01 15:48:08
+ * @LastEditTime: 2022-03-01 15:56:09
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\README.md
 -->
@@ -19,7 +19,7 @@
 
 🎈 深入 Vue 核心逻辑
 
-#### reactivity
+#### reactivity 响应式系统
 
 💥 reactive
 
@@ -38,3 +38,29 @@
 💥 支持 effect.scheduler()
 
 💥 支持 ref()
+
+##### 单模块调试
+
+`yarn install`
+`yarn run buuild`
+
+```HTML
+<body>
+  <div id="app"></div>
+  <button id="btn">counter++</button>
+</body>
+<script src="/node_modules/@vue/reactivity/dist/reactivity.global.js"></script>
+<script>
+  const { ref, effect } = VueReactivity
+
+  let counter = ref(0)
+
+  effect(() => {
+    app.innerHTML = counter.value
+  })
+
+  btn.onclick = () => counter.value++
+</script>
+
+
+```
