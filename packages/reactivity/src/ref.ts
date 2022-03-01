@@ -4,25 +4,19 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: ref
- * @LastEditTime: 2022-03-01 14:50:28
+ * @LastEditTime: 2022-03-01 15:47:16
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\ref.ts
  */
 
-import {
-  hasChanged,
-  isObject
-} from '@vue/shared'
-import {
-  createDep,
-  Dep
-} from "./dep"
 import {
   activeEffect,
   shouldTrack,
   trackEffects,
   triggerEffects
 } from './effect'
+import { hasChanged } from '@vue/shared'
+import { createDep, Dep } from "./dep"
 import { toRaw, toReactive } from './reactive'
 
 type RefBase<T> = {
@@ -31,14 +25,9 @@ type RefBase<T> = {
 }
 
 export function trackRefValue(ref: RefBase<any>) {
-
-  /** 初次获取 activeEffect不收集Effect
-   *  当set是触发activeEffect收集effect
-  */
   if (shouldTrack && activeEffect) {
     trackEffects(ref.dep || (ref.dep = createDep()))
   }
-
 }
 
 export interface Ref<T = any> {
@@ -69,8 +58,7 @@ class refImpl<T> {
   set value(newVal) {
     if (hasChanged(newVal, this._rawValue)) {
       this._rawValue = newVal
-      this.value = this.__v_isShallow ? newVal : toReactive(newVal)
-
+      this._value = this.__v_isShallow ? newVal : toReactive(newVal)
       triggerRefValue(this)
     }
   }

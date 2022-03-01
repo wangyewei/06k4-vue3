@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 依赖收集
- * @LastEditTime: 2022-02-28 15:48:09
+ * @LastEditTime: 2022-03-01 15:44:18
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\effect.ts
  */
@@ -27,7 +27,7 @@ export class ReactiveEffect<T = any> {
     public scheduler: EffectScheduler | null = null
 
   ) {
-
+    
   }
 
   run() {
@@ -37,7 +37,7 @@ export class ReactiveEffect<T = any> {
 
     let parent: ReactiveEffect | undefined = activeEffect
     let lastShouldTrack: Boolean = shouldTrack
-    // dfs
+    // bfs
     while (parent) {
       if (parent === this) {
         return
@@ -53,7 +53,6 @@ export class ReactiveEffect<T = any> {
       this.parent = activeEffect
       activeEffect = this
       shouldTrack = true
-
       // ;[this.parent, activeEffect] = [activeEffect, this]
       // 执行用户传入的fn
       return this.fn()

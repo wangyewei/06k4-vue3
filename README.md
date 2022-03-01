@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: readme
- * @LastEditTime: 2022-02-24 17:49:04
+ * @LastEditTime: 2022-03-01 15:48:08
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\README.md
 -->
@@ -36,3 +36,5 @@
 💥 支持 effect.stop()
 
 💥 支持 effect.scheduler()
+
+💥 支持 ref()
