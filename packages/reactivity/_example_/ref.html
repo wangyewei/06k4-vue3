@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: ref demo
- * @LastEditTime: 2022-03-01 14:02:27
+ * @LastEditTime: 2022-03-01 14:36:09
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\_example_\ref.html
 -->
@@ -19,20 +19,22 @@
   </head>
   <body>
     <div id="app"></div>
+    <button id="btn">counter ++</button>
     <script src="../../../node_modules/@vue/reactivity/dist/reactivity.global.js"></script>
     <script>
-      const { ref } = VueReactivity
+      const { ref, effect } = VueReactivity
+      const log = (value) => console.log(value)
+      let counter = ref(0)
 
-      let name = ref("wangyewei")
+      effect(() => {
+        app.innerHTML = counter.value
+      })
 
-      console.log(name.value)
-      // setTimeout(() => {
-      //   app.innerHTML = name.value
-      // }, 3000)
-      // setTimeout(() => {
-      //   name.value = "王野未"
-      //   console.log(name.value)
-      // }, 3000)
+      btn.onclick = () => {
+        counter.value++
+
+        log(counter.value)
+      }
     </script>
   </body>
 </html>

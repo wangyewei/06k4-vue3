@@ -4,31 +4,26 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: ref
- * @LastEditTime: 2022-02-28 16:37:13
+ * @LastEditTime: 2022-03-01 14:50:28
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\ref.ts
  */
 
 import {
-  hasChanged
+  hasChanged,
+  isObject
 } from '@vue/shared'
 import {
   createDep,
   Dep
 } from "./dep"
 import {
-  isObject
-} from '@vue/shared'
-import {
-  reactive
-} from '.'
-import {
   activeEffect,
   shouldTrack,
   trackEffects,
   triggerEffects
 } from './effect'
-import { toRaw } from './reactive'
+import { toRaw, toReactive } from './reactive'
 
 type RefBase<T> = {
   dep?: Dep
@@ -36,18 +31,18 @@ type RefBase<T> = {
 }
 
 export function trackRefValue(ref: RefBase<any>) {
+
+  /** 初次获取 activeEffect不收集Effect
+   *  当set是触发activeEffect收集effect
+  */
   if (shouldTrack && activeEffect) {
-    console.log('in')
     trackEffects(ref.dep || (ref.dep = createDep()))
   }
+
 }
 
 export interface Ref<T = any> {
   value: T
-}
-
-export function toReactive(value: unknown) {
-  return isObject(value) ? reactive(value) : value
 }
 
 class refImpl<T> {
@@ -82,7 +77,10 @@ class refImpl<T> {
 }
 
 export function triggerRefValue(ref: RefBase<any>) {
-  triggerEffects(ref.dep)
+  ref = toRaw(ref)
+  if (ref.dep) {
+    triggerEffects(ref.dep)
+  }
 }
 
 export function isRef<T>(

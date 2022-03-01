@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: reactive api
- * @LastEditTime: 2022-02-28 15:33:29
+ * @LastEditTime: 2022-03-01 14:47:25
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\reactive.ts
  */
@@ -63,6 +63,7 @@ function targetTypeMap(rawType: string) {
 //     : targetTypeMap(toRawType(value));
 // }
 
+export function reactive<T extends object>(target: T): any
 export function reactive(target: object) {
   if(isReadonly(target)) {
     return target
@@ -137,7 +138,11 @@ export function toRaw<T>(observed: T): T {
   return raw ? toRaw(raw) : observed
 }
 
+// export function toReactive<T extends unknown>(target: T):T {
+//   return isObject(target) ? reactive(target) : target
+// }
 
+export const toReactive = <T extends unknown>(value: T): T => isObject(value) ? reactive((value as object)) : value
 /** 判断目标是否只读 */
 export function isReadonly(value: unknown):boolean {
   return !!(value && (value as Target)[ReactiveFlags.IS_READONLY])
