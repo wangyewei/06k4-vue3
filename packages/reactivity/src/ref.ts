@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: ref
- * @LastEditTime: 2022-03-02 19:10:18
+ * @LastEditTime: 2022-03-02 19:14:59
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\ref.ts
  */
@@ -92,9 +92,15 @@ export function createRef(
   return new refImpl(rawValue, shallow)
 }
 
+/**Refs API ref : 返回一个响应式ref对象 */
 export function ref<T extends object>(
   value: T
 ): T
 export function ref(value?: unknown) {
   return createRef(value, false)
+}
+
+/**Refs API unref : 如果参数是一个 ref，则返回内部值，否则返回参数本身 */
+export function unref<T>(ref: T | Ref<T>):T {
+  return isRef(ref) ? ref.value : ref
 }
