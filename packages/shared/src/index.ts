@@ -4,10 +4,13 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 公共方法
- * @LastEditTime: 2022-02-18 21:13:45
+ * @LastEditTime: 2022-03-02 23:26:15
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\shared\src\index.ts
  */
+
+
+export * from './typeUtils'
 
 
 /** 判断数据结构相关方法 */

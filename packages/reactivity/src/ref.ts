@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: ref
- * @LastEditTime: 2022-03-02 21:46:59
+ * @LastEditTime: 2022-03-02 23:33:26
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\ref.ts
  */
@@ -15,7 +15,7 @@ import {
   trackEffects,
   triggerEffects
 } from './effect'
-import { hasChanged } from '@vue/shared'
+import { hasChanged, IfAny } from '@vue/shared'
 import { createDep, Dep } from "./dep"
 import { toRaw, toReactive } from './reactive'
 
@@ -97,6 +97,10 @@ export function ref<T extends object>(
   value: T
 ): T
 export function ref(value?: unknown) {
+
+  // type anx = 0 extends 1 ? 'yes' : 'not'
+  // console.log('-------', 0 extends (1))
+  
   return createRef(value, false)
 }
 
@@ -106,3 +110,19 @@ export function unref<T>(ref: T | Ref<T>):T {
 }
 
 /**Refs API toRef :  可以用来为源响应式对象上的某个 property 新创建一个 ref*/
+export type ToRef<T> = IfAny<T, Ref<T>, [T] extends [Ref] ? T : Ref<T>>
+export function toRef<T extends object, K extends keyof T>(
+  object: T,
+  key: K
+): ToRef<T[K]>
+
+export function toRef<T extends object, K extends keyof T>(
+  object: T,
+  key: K
+): ToRef<T[K]> {
+  const val = object[key]
+  return isRef(val) ? val : (0 as any)
+}
+// export function toRef() {
+
+// }
