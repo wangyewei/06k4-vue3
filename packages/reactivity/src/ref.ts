@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: ref
- * @LastEditTime: 2022-03-01 15:47:16
+ * @LastEditTime: 2022-03-02 19:10:18
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\ref.ts
  */
@@ -71,6 +71,7 @@ export function triggerRefValue(ref: RefBase<any>) {
   }
 }
 
+/**Refs API： 检查一个值是否为ref对象 */
 export function isRef<T>(
   r: Ref<T> | unknown
 ): r is Ref<T>
@@ -97,4 +98,3 @@ export function ref<T extends object>(
 export function ref(value?: unknown) {
   return createRef(value, false)
 }
-
