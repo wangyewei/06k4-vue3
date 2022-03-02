@@ -4,18 +4,10 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 实现new Proxy(target, handler)
- * @LastEditTime: 2022-02-24 17:53:10
+ * @LastEditTime: 2022-03-01 21:23:11
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\baseHandlers.ts
  */
-import {
-  track,
-  trigger
-} from './effect'
-import {
-  TrackOpTypes,
-  TriggerOpTypes
-} from './operations'
 import {
   isObject,
   extend,
@@ -24,10 +16,9 @@ import {
   hasOwn,
   hasChanged
 } from '@vue/shared'
-import { reactive, readonly } from '.'
-import {
-  Target
-} from './reactive'
+import { track, trigger } from './effect'
+import { TrackOpTypes, TriggerOpTypes } from './operations'
+import { Target, reactive, readonly } from './reactive'
 
 /**
  * 拦截获取功能
@@ -53,6 +44,7 @@ function createGetter(isReadonly = false, shallow = false) {
       return res
     }
 
+    /**BUG: 循环依赖 */
     if (isObject(res)) {
       return isReadonly ? readonly(res) : reactive(res)
     }

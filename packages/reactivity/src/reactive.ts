@@ -4,12 +4,11 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: reactive api
- * @LastEditTime: 2022-03-01 14:47:25
+ * @LastEditTime: 2022-03-02 17:38:35
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\reactive.ts
  */
-import { isObject, toRawType } from "@vue/shared";
-
+import { isObject } from "@vue/shared";
 import {
   mutableHandlers,
   shallowReactiveHandlers,
@@ -32,36 +31,6 @@ export interface Target {
   [ReactiveFlags.IS_SHALLOW]?: boolean;
   [ReactiveFlags.RAW]?: any;
 }
-
-const enum TargetType {
-  INVALID = 0,
-  COMMON = 1,
-  COLLECTION = 2,
-}
-
-// WeakSet 对象是一些对象值的集合, 并且其中的每个对象值都只能出现一次。在WeakSet的集合中是唯一的
-function targetTypeMap(rawType: string) {
-  switch (rawType) {
-    case "Object":
-    case "Array":
-      return TargetType.COMMON;
-    case "Map":
-    case "Set":
-    case "weakMap":
-    case "weakSet":
-      return TargetType.COLLECTION;
-    default:
-      return TargetType.INVALID;
-  }
-}
-
-// function getTargetType(value: Target) {
-//   // 是否跳过或者是否能添加属性
-//   // isExtensible判断一个对象是否可以添加属性
-//   return value[ReactiveFlags.SKIP] || !Object.isExtensible(value)
-//     ? TargetType.INVALID
-//     : targetTypeMap(toRawType(value));
-// }
 
 export function reactive<T extends object>(target: T): any
 export function reactive(target: object) {
@@ -132,18 +101,15 @@ function createReactiveObject(
   return proxy;
 }
 
-
 export function toRaw<T>(observed: T): T {
   const raw = observed && (observed as Target)[ReactiveFlags.RAW]
   return raw ? toRaw(raw) : observed
 }
 
-// export function toReactive<T extends unknown>(target: T):T {
-//   return isObject(target) ? reactive(target) : target
-// }
+export function toReactive<T extends unknown>(target: T):T {
+  return isObject(target) ? reactive((target as object)) : target
+}
 
-export const toReactive = <T extends unknown>(value: T): T => isObject(value) ? reactive((value as object)) : value
-/** 判断目标是否只读 */
 export function isReadonly(value: unknown):boolean {
   return !!(value && (value as Target)[ReactiveFlags.IS_READONLY])
 }
