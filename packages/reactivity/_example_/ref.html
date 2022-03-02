@@ -4,9 +4,9 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: ref demo
- * @LastEditTime: 2022-03-01 15:46:10
+ * @LastEditTime: 2022-03-02 21:45:05
  * @Version: 06k4 vue3
- * @FilePath: \06k4-vue3\packages\reactivity\__example__\ref.html
+ * @FilePath: \06k4-vue3\packages\reactivity\_example_\ref.html
 -->
 
 <!DOCTYPE html>
@@ -22,7 +22,7 @@
     <button id="btn">counter ++</button>
     <script src="../../../node_modules/@vue/reactivity/dist/reactivity.global.js"></script>
     <script>
-      const { ref, effect } = VueReactivity
+      const { ref, effect, isRef, unref } = VueReactivity
       const log = (value) => console.log(value)
       let counter = ref(0)
 
@@ -33,6 +33,14 @@
       btn.onclick = () => {
         counter.value++
       }
+
+      let checkRef = isRef(counter) ? "是Ref" : "不是Ref"
+      let checkNotRef = isRef("ref") ? "是ref" : "不是ref"
+      console.log("ref: ", checkRef)
+      console.log("not ref: ", checkNotRef)
+
+      console.log("unref: ", unref(counter))
+      console.log("unnotref: ", unref("notref"))
     </script>
   </body>
 </html>

@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: ref
- * @LastEditTime: 2022-03-02 19:14:59
+ * @LastEditTime: 2022-03-02 21:46:59
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\ref.ts
  */
@@ -104,3 +104,5 @@ export function ref(value?: unknown) {
 export function unref<T>(ref: T | Ref<T>):T {
   return isRef(ref) ? ref.value : ref
 }
+
+/**Refs API toRef :  可以用来为源响应式对象上的某个 property 新创建一个 ref*/
