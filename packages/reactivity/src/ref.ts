@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: ref
- * @LastEditTime: 2022-03-03 14:07:30
+ * @LastEditTime: 2022-03-03 14:30:08
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\ref.ts
  */
@@ -15,7 +15,7 @@ import {
   trackEffects,
   triggerEffects
 } from './effect'
-import { hasChanged, IfAny } from '@vue/shared'
+import { hasChanged, IfAny, isArray } from '@vue/shared'
 import { createDep, Dep } from "./dep"
 import { toRaw, toReactive } from './reactive'
 
@@ -135,3 +135,16 @@ export function toRef<T extends object, K extends keyof T>(
   return isRef(val) ? val : (new objectRefImpl(object, key, defaultVAlue) as any)
 }
 
+/**Refs API toRefs: 将响应式对象转换为普通对象，其中结果对象的每个 property 都是指向原始对象相应 property 的 ref */
+export type ToRefs<T = any> = {
+  [K in keyof T] : ToRef<T[K]>
+}
+export function toRefs<T extends object>(
+  object: T
+): ToRefs<T> { 
+  const ret: any = isArray(object) ? new Array(object.length) : {}
+  for(const key in object) {
+    ret[key] = toRef(object, key)
+  }
+  return ret 
+}

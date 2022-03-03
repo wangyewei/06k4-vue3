@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: readme
- * @LastEditTime: 2022-03-03 14:11:35
+ * @LastEditTime: 2022-03-03 14:32:09
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\README.md
 -->
@@ -49,7 +49,7 @@
 
 💥 toRef 可以用来为源响应式对象上的某个 property 新创建一个 ref
 
-🚫 toRefs
+💥 toRefs 结构不丢失响应式
 
 💥 isRef 检查一个值是否为 ref 对象
 
