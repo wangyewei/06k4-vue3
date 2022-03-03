@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: ref
- * @LastEditTime: 2022-03-03 14:58:11
+ * @LastEditTime: 2022-03-03 15:11:14
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\ref.ts
  */
@@ -151,11 +151,19 @@ export function toRefs<T extends object>(
 
 /**Refs API customRef: 创建一个自定义的 ref，并对其依赖项跟踪和更新触发进行显式控制 */
 
+export type CustomRefFactory<T> = (
+  track: () => void,
+  trigger: () => void
+) => {
+  get: () => T,
+  set: (value: T) => void
+}
+
 class CustomRefImpl<T> {
   public dep? = undefined
 
-  private _get: ReturnType<CustomRefFactory<T>>['get']
-  private _set: ReturnType<CustomRefFactory<T>>['set']
+  private _get: ReturnType<CustomRefFactory<T>>['get'] // ~ () => T
+  private _set: ReturnType<CustomRefFactory<T>>['set'] // ~ (value: T) => void
 
   constructor(factory: CustomRefFactory<T>) {
     const {get, set} = factory(
@@ -174,14 +182,6 @@ class CustomRefImpl<T> {
   set value(newVal) {
     this._set(newVal)
   }
-}
-
-export type CustomRefFactory<T> = (
-  track: () => void,
-  trigger: () => void
-) => {
-  get: () => T,
-  set: (value: T) => void
 }
 
 export function customRef<T>(factory: CustomRefFactory<T>): Ref<T> {

@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: readme
- * @LastEditTime: 2022-03-03 14:32:09
+ * @LastEditTime: 2022-03-03 15:45:00
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\README.md
 -->
@@ -53,7 +53,7 @@
 
 💥 isRef 检查一个值是否为 ref 对象
 
-🚫 customRef
+💥 customRef 创建一个对其依赖项跟踪和更新触发进行显式控制的 ref
 
 🚫 shallowRef
 

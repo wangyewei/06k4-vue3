@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: 导出响应式方法
- * @LastEditTime: 2022-03-03 14:30:16
+ * @LastEditTime: 2022-03-03 15:44:15
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\index.ts
  */
@@ -25,5 +25,6 @@ export {
   isRef,
   unref,
   toRef,
-  toRefs
+  toRefs,
+  customRef
 } from './ref'
