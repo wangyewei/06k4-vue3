@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: readme
- * @LastEditTime: 2022-03-03 15:45:00
+ * @LastEditTime: 2022-03-03 20:15:17
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\README.md
 -->
@@ -31,7 +31,7 @@
 
 🚫 isReactive 检查对象是否是由`reactive`创建的响应式代理
 
-🚫 isReadonly 检查对象是否是由`readonly`创建的只读代理
+💥 isReadonly 检查对象是否是由`readonly`创建的只读代理
 
 💥 toRaw 返回`reactive`或`readonly`代理的原始对象
 
@@ -55,9 +55,9 @@
 
 💥 customRef 创建一个对其依赖项跟踪和更新触发进行显式控制的 ref
 
-🚫 shallowRef
+💥 shallowRef 创建一个跟踪自身 .value 变化的 ref，但不会使其值也变成响应式的
 
-🚫 triggerRef
+💥 triggerRef 手动执行与 shalloRef 关联的 effect
 
 ### Effect
 

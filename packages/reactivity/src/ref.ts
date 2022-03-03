@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: ref
- * @LastEditTime: 2022-03-03 16:30:51
+ * @LastEditTime: 2022-03-03 20:14:18
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\ref.ts
  */
@@ -67,6 +67,16 @@ export function unref<T>(ref: T | Ref<T>): T {
 
 /**Refs API toRef :  可以用来为源响应式对象上的某个 property 新创建一个 ref*/
 
+export type ToRef<T> = IfAny<T, Ref<T>, [T] extends [Ref] ? T : Ref<T>>
+export function toRef<T extends object, K extends keyof T>(
+  object: T,
+  key: K,
+  defaultVAlue?: T[K]
+): ToRef<T[K]> {
+  const val = object[key]
+  return isRef(val) ? val : (new objectRefImpl(object, key, defaultVAlue) as any)
+}
+
 class objectRefImpl<T extends object, K extends keyof T> {
   public readonly __v_isRef = true
 
@@ -84,16 +94,6 @@ class objectRefImpl<T extends object, K extends keyof T> {
   set value(newVal) {
     this._object[this._key] = newVal
   }
-}
-
-export type ToRef<T> = IfAny<T, Ref<T>, [T] extends [Ref] ? T : Ref<T>>
-export function toRef<T extends object, K extends keyof T>(
-  object: T,
-  key: K,
-  defaultVAlue?: T[K]
-): ToRef<T[K]> {
-  const val = object[key]
-  return isRef(val) ? val : (new objectRefImpl(object, key, defaultVAlue) as any)
 }
 
 /**Refs API toRefs: 将响应式对象转换为普通对象，其中结果对象的每个 property 都是指向原始对象相应 property 的 ref */
@@ -156,19 +156,25 @@ export function customRef<T>(factory: CustomRefFactory<T>): Ref<T> {
  *  unique symbol 类型的值始终与自身相等
  *  const f: unique symbol = Symbol('f')
  */
+/** */
 declare const ShallowRefMarker: unique symbol
 
-export type ShallowRef<T = any> = Ref<T> & {[ShallowRefMarker]?: true}
+export type ShallowRef<T = any> = Ref<T> & { [ShallowRefMarker]?: true }
 
 /**分别为传参和不传参定义重载签名 */
+/**shollowRef: 创建一个跟踪自身 .value 变化的 ref，但不会使其值也变成响应式的。 */
 export function shallowRef<T extends object>(value?: T): T extends Ref<T> ? T : ShallowRef<T>
 export function shallowRef<T>(value: T): ShallowRef<T>
-export function shallowRef<T = any>():ShallowRef<T | undefined>
+export function shallowRef<T = any>(): ShallowRef<T | undefined>
 
 export function shallowRef(value?: unknown) {
   return createRef(value, true)
 }
 
+/**triggerRef: 手动执行与shallowRef关联的effect */
+export function triggerRef(ref: Ref) {
+  triggerRefValue(ref.value)
+}
 /**ref impl */
 export function createRef(
   rawValue: unknown,
