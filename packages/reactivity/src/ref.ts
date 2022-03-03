@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: ref
- * @LastEditTime: 2022-03-03 14:53:32
+ * @LastEditTime: 2022-03-03 14:58:11
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\ref.ts
  */
@@ -154,9 +154,9 @@ export function toRefs<T extends object>(
 class CustomRefImpl<T> {
   public dep? = undefined
 
-  private _get: any
-  private _set: any
-  
+  private _get: ReturnType<CustomRefFactory<T>>['get']
+  private _set: ReturnType<CustomRefFactory<T>>['set']
+
   constructor(factory: CustomRefFactory<T>) {
     const {get, set} = factory(
       () => trackRefValue(this),
