@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: ref demo
- * @LastEditTime: 2022-03-03 14:35:39
+ * @LastEditTime: 2022-03-03 16:05:51
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\_example_\ref.html
 -->
@@ -23,7 +23,7 @@
     <button id="btn">counter ++</button>
     <script src="../../../node_modules/@vue/reactivity/dist/reactivity.global.js"></script>
     <script>
-      const { ref, effect, isRef, unref, toRef, reactive, toRefs } =
+      const { ref, effect, isRef, unref, toRef, reactive, toRefs, customRef } =
         VueReactivity
       const log = (value) => console.log(value)
       let counter = ref(0)
@@ -61,7 +61,25 @@
         bar: "yewei",
       })
       const { foo, bar } = useFeatureX(toRefsState)
-      console.log(foo.value)
+
+      function useDebounce(value) {
+        return customRef((track, trigger) => {
+          return {
+            get() {
+              track()
+              return value
+            },
+
+            set(newVal) {
+              value = newVal
+
+              trigger()
+            },
+          }
+        })
+      }
+      const coutom_ref = useDebounce("wang")
+      console.log(coutom_ref.value)
     </script>
   </body>
 </html>
