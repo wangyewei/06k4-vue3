@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: readme
- * @LastEditTime: 2022-03-02 19:10:56
+ * @LastEditTime: 2022-03-03 14:11:35
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\README.md
 -->
@@ -45,9 +45,9 @@
 
 💥 ref 接受一个内部值并返回一个响应式且可变的 ref 对象。ref 对象仅有一个 .value property，指向该内部值
 
-🚫 unref
+💥 unref 如果参数是一个 ref，则返回内部值，否则返回参数本身
 
-🚫 toRef
+💥 toRef 可以用来为源响应式对象上的某个 property 新创建一个 ref
 
 🚫 toRefs
 
