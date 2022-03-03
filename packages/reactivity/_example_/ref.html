@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: ref demo
- * @LastEditTime: 2022-03-02 23:27:15
+ * @LastEditTime: 2022-03-03 14:08:30
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\_example_\ref.html
 -->
@@ -19,10 +19,11 @@
   </head>
   <body>
     <div id="app"></div>
+    <!-- <div id="app_toref"></div> -->
     <button id="btn">counter ++</button>
     <script src="../../../node_modules/@vue/reactivity/dist/reactivity.global.js"></script>
     <script>
-      const { ref, effect, isRef, unref } = VueReactivity
+      const { ref, effect, isRef, unref, toRef, reactive } = VueReactivity
       const log = (value) => console.log(value)
       let counter = ref(0)
 
@@ -41,6 +42,14 @@
 
       console.log("unref: ", unref(counter))
       console.log("unnotref: ", unref("notref"))
+
+      const state = reactive({
+        counter: 0,
+      })
+
+      let counterRef = toRef(state, "counter")
+
+      console.log("counterRef: ", counterRef.value)
     </script>
   </body>
 </html>

@@ -4,7 +4,7 @@
  * @WeChat: Studio06k4
  * @Motto: 求知若渴，虚心若愚
  * @Description: ref
- * @LastEditTime: 2022-03-02 23:33:26
+ * @LastEditTime: 2022-03-03 14:07:30
  * @Version: 06k4 vue3
  * @FilePath: \06k4-vue3\packages\reactivity\src\ref.ts
  */
@@ -44,7 +44,6 @@ class refImpl<T> {
     value: T,
     public readonly __v_isShallow: boolean
   ) {
-
     this._rawValue = __v_isShallow ? value : toRaw(value)
     this._value = __v_isShallow ? value : toReactive(value)
   }
@@ -97,32 +96,42 @@ export function ref<T extends object>(
   value: T
 ): T
 export function ref(value?: unknown) {
-
-  // type anx = 0 extends 1 ? 'yes' : 'not'
-  // console.log('-------', 0 extends (1))
-  
   return createRef(value, false)
 }
 
 /**Refs API unref : 如果参数是一个 ref，则返回内部值，否则返回参数本身 */
-export function unref<T>(ref: T | Ref<T>):T {
+export function unref<T>(ref: T | Ref<T>): T {
   return isRef(ref) ? ref.value : ref
 }
 
 /**Refs API toRef :  可以用来为源响应式对象上的某个 property 新创建一个 ref*/
+
+class objectRefImpl<T extends object, K extends keyof T> {
+  public readonly __v_isRef = true
+
+  constructor(
+    public readonly _object: T,
+    public readonly _key: K,
+    public readonly _defaultValue?: T[K]
+  ){}
+
+  get value():T[K] {
+    const val = this._object[this._key]
+    return val === undefined ? (this._defaultValue as T[K]) : val
+  }
+
+  set value(newVal) {
+    this._object[this._key] = newVal 
+  }
+}
+
 export type ToRef<T> = IfAny<T, Ref<T>, [T] extends [Ref] ? T : Ref<T>>
 export function toRef<T extends object, K extends keyof T>(
   object: T,
-  key: K
-): ToRef<T[K]>
-
-export function toRef<T extends object, K extends keyof T>(
-  object: T,
-  key: K
+  key: K,
+  defaultVAlue?: T[K]
 ): ToRef<T[K]> {
   const val = object[key]
-  return isRef(val) ? val : (0 as any)
+  return isRef(val) ? val : (new objectRefImpl(object, key, defaultVAlue) as any)
 }
-// export function toRef() {
 
-// }
